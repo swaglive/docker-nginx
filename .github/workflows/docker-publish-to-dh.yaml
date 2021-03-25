@@ -6,6 +6,7 @@ on:
     branches:
       - "**"
 
+
 jobs:
   docker-publish-to-dh:
     runs-on: ubuntu-latest
@@ -23,6 +24,7 @@ jobs:
         run: |
           echo "IMAGE_TAG=${{ matrix.version }}-sha-${GITHUB_SHA:0:7}" >> $GITHUB_ENV
           echo "IMAGE_REPOSITORY=${GITHUB_REPOSITORY/docker-/}" >> $GITHUB_ENV
+          echo "ENABLED_MODULES=$(grep ENABLED_MODULES 1.19-alpine/docker-compose.yaml | cut -d ':' -f2- | xargs)" >> $GITHUB_ENV
 
       # https://github.com/docker/build-push-action
       - uses: docker/build-push-action@v1
@@ -34,3 +36,4 @@ jobs:
           repository: ${{ env.IMAGE_REPOSITORY }}
           path: ${{ matrix.version }}/docker
           push: ${{ contains(github.ref, 'master') }}
+          build_args: ENABLED_MODULES=${{ env.ENABLED_MODULES }}
