@@ -13,8 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - "1.0"
-          - "2.0"
+          - "1.19-alpine"
     steps:
       # https://github.com/actions/checkout
       - name: Checkout
@@ -33,5 +32,5 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           tags: ${{ matrix.version }}, ${{ env.IMAGE_TAG}}
           repository: ${{ env.IMAGE_REPOSITORY }}
-          path: ${{ matrix.version }}
+          path: ${{ matrix.version }}/docker
           push: ${{ contains(github.ref, 'master') }}

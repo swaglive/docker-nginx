@@ -1,12 +1,20 @@
-![docker-publish-to-dh](https://github.com/swaglive/docker-image-template/workflows/docker-publish-to-dh/badge.svg)
+![docker-publish-to-dh](https://github.com/swaglive/docker-nginx/workflows/docker-publish-to-dh/badge.svg)
+## Get latest `Dockerfile` template
+```bash
+curl -o Dockerfile https://raw.githubusercontent.com/nginxinc/docker-nginx/master/modules/Dockerfile.alpine
+```
 
-This template will:
-1. Trigger workflow when
-    - git push to branch `**`
-2. Build a docker image from this repo.
-3. Push docker images to different Docker Registry on branch `master`:
-    - [Docker Hub](#docker-hub)
+## Add a module (if it's not on pkg-oss[1])
+```bash
+mkdir -p modules/echo
+echo "https://github.com/openresty/echo-nginx-module/archive/v0.62.tar.gz" > docker/echo/source
+```
 
-## [Docker Hub](https://hub.docker.com/)
-- [Create acceess token from Docker Hub](https://docs.docker.com/docker-hub/access-tokens/#create-an-access-token)
-    - Add `secrets.DOCKER_USERNAME`, `secrets.DOCKER_PASSWORD`: Setting -> Secrets -> New secret
+Build image
+```bash
+docker-compose up --build
+```
+
+## Other Info
+[1] Packaged modules `Makefile.module-*`: https://hg.nginx.org/pkg-oss/file/tip/alpine
+[2] DockerHub - nginx: https://hub.docker.com/_/nginx
