@@ -32,8 +32,8 @@ jobs:
       - uses: docker/build-push-action@v1
         with:
           # https://docs.docker.com/docker-hub/access-tokens/#create-an-access-token
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
           tags: ${{ matrix.version }}, ${{ env.IMAGE_TAG}}
           repository: ${{ env.IMAGE_REPOSITORY }}
           path: ${{ matrix.version }}/docker
