@@ -1,4 +1,4 @@
-[![docker-publish-to-dh 1.19-alpine](https://github.com/swaglive/docker-nginx/actions/workflows/docker-publish-to-dh.yaml/badge.svg)](https://github.com/swaglive/docker-nginx/actions/workflows/docker-publish-to-dh-1.19-alpine.yaml)
+[![docker-publish-to-dh 1.19-alpine](https://github.com/swaglive/docker-nginx/actions/workflows/docker-publish-to-dh-1.19-alpine.yaml/badge.svg)](https://github.com/swaglive/docker-nginx/actions/workflows/docker-publish-to-dh-1.19-alpine.yaml)
 
 ## Get latest `Dockerfile` template
 ```bash
