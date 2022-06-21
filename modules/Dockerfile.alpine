@@ -1,3 +1,4 @@
+# REF: https://github.com/nginxinc/docker-nginx/blob/master/modules/Dockerfile.alpine
 ARG base=nginx:mainline-alpine
 
 FROM ${base} as builder
