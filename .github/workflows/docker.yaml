@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     permissions:
       contents: read
       packages: write
@@ -16,7 +16,7 @@ jobs:
         version:
         - "1.22.0-alpine3.16"
         modules:
-        - "ndk lua geoip2"
+        - "xslt geoip image-filter njs geoip2 brotli headers-more opentracing subs-filter set-misc"
 
     steps:
     - name: Checkout
@@ -61,6 +61,7 @@ jobs:
         file: modules/Dockerfile.alpine
         build-args: |
           version=${{ matrix.version }}
+          ENABLED_MODULES=${{ matrix.modules }}
         push: ${{ !steps.config.outputs.skip-push-to-registry }}
         labels: ${{ steps.meta.outputs.labels }}
         tags: ${{ steps.meta.outputs.tags }}
