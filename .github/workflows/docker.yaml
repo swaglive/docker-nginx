@@ -1,0 +1,68 @@
+name: Docker
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      packages: write
+
+    strategy:
+      matrix:
+        version:
+        - "1.22.0-alpine3.16"
+        modules:
+        - "ndk lua geoip2"
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup - buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Setup - Docker Hub
+      uses: docker/login-action@v2
+      if: ${{ !steps.config.outputs.skip-push-to-registry }}
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Setup - Github Container Registry
+      uses: docker/login-action@v2
+      if: ${{ !steps.config.outputs.skip-push-to-registry }}
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ github.token }}
+
+    - name: Setup - Docker image metadata
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: |-
+          swaglive/nginx
+          ghcr.io/${{ github.repository_owner }}/nginx
+        flavor: |-
+          latest=${{ !!matrix.latest }}
+        tags: |-
+          type=semver,pattern={{major}}.{{minor}},value=${{ matrix.version }}
+          type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ matrix.version }}
+
+    - name: Build
+      uses: docker/build-push-action@v3
+      id: build
+      with:
+        context: modules
+        file: modules/Dockerfile.alpine
+        build-args: |
+          version=${{ matrix.version }}
+        push: ${{ !steps.config.outputs.skip-push-to-registry }}
+        labels: ${{ steps.meta.outputs.labels }}
+        tags: ${{ steps.meta.outputs.tags }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max

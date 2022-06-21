@@ -1,4 +1,6 @@
-FROM nginx:1.19-alpine as builder
+ARG base=nginx:mainline-alpine
+
+FROM ${base} as builder
 
 ARG ENABLED_MODULES
 
@@ -12,13 +14,13 @@ COPY ./ /modules/
 
 RUN set -ex \
     && apk update \
-    && apk add linux-headers openssl-dev pcre-dev zlib-dev openssl abuild \
+    && apk add linux-headers openssl-dev pcre2-dev zlib-dev openssl abuild \
                musl-dev libxslt libxml2-utils make mercurial gcc unzip git \
-               xz g++ \
+               xz g++ coreutils \
     # allow abuild as a root user \
-    && printf "#!/bin/sh\\n/usr/bin/abuild -F \"\$@\"\\n" > /usr/local/bin/abuild \
+    && printf "#!/bin/sh\\nSETFATTR=true /usr/bin/abuild -F \"\$@\"\\n" > /usr/local/bin/abuild \
     && chmod +x /usr/local/bin/abuild \
-    && hg clone https://hg.nginx.org/pkg-oss/ \
+    && hg clone -r ${NGINX_VERSION}-${PKG_RELEASE} https://hg.nginx.org/pkg-oss/ \
     && cd pkg-oss \
     && mkdir /tmp/packages \
     && for module in $ENABLED_MODULES; do \
@@ -44,6 +46,7 @@ RUN set -ex \
                 /modules/$module/prebuild; \
             fi; \
             /pkg-oss/build_module.sh -v $NGINX_VERSION -f -y -o /tmp/packages -n $module $(cat /modules/$module/source); \
+            BUILT_MODULES="$BUILT_MODULES $(echo $module | tr '[A-Z]' '[a-z]' | tr -d '[/_\-\.\t ]')"; \
         elif make -C /pkg-oss/alpine list | grep -E "^$module\s+\d+" > /dev/null; then \
             echo "Building $module from pkg-oss sources"; \
             cd /pkg-oss/alpine; \
@@ -51,17 +54,19 @@ RUN set -ex \
             apk add $(. ./abuild-module-$module/APKBUILD; echo $makedepends;); \
             make module-$module BASE_VERSION=$NGINX_VERSION NGINX_VERSION=$NGINX_VERSION; \
             find ~/packages -type f -name "*.apk" -exec mv -v {} /tmp/packages/ \;; \
+            BUILT_MODULES="$BUILT_MODULES $module"; \
         else \
             echo "Don't know how to build $module module, exiting"; \
             exit 1; \
         fi; \
-    done
+    done \
+    && echo "BUILT_MODULES=\"$BUILT_MODULES\"" > /tmp/packages/modules.env
 
-FROM nginx:1.19-alpine
-ARG ENABLED_MODULES
+FROM ${base}
 COPY --from=builder /tmp/packages /tmp/packages
 RUN set -ex \
-    && for module in $ENABLED_MODULES; do \
+    && . /tmp/packages/modules.env \
+    && for module in $BUILT_MODULES; do \
            apk add --no-cache --allow-untrusted /tmp/packages/nginx-module-${module}-${NGINX_VERSION}*.apk; \
        done \
     && rm -rf /tmp/packages
