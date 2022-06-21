@@ -62,7 +62,7 @@ jobs:
         file: modules/Dockerfile.alpine
         build-args: |
           version=${{ matrix.version }}
-          ENABLED_MODULES=${{ matrix.modules }}
+          ENABLED_MODULES=ndk ${{ matrix.modules }}
         push: ${{ !steps.config.outputs.skip-push-to-registry }}
         labels: ${{ steps.meta.outputs.labels }}
         tags: ${{ steps.meta.outputs.tags }}
