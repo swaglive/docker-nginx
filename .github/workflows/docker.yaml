@@ -17,7 +17,7 @@ jobs:
         - "1.22.0-alpine3.15"
         - "1.22.0-alpine3.16"
         modules:
-        - "xslt geoip image-filter njs geoip2 brotli headers-more opentracing subs-filter set-misc"
+        - "xslt geoip image-filter njs geoip2 brotli headers-more opentracing subs-filter set-misc ngx_http_proxy_connect_module"
 
     steps:
     - name: Checkout
