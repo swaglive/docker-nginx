@@ -1,5 +1,0 @@
-## Add a module (if it's not on pkg-oss[1])
-```bash
-mkdir -p modules/PACKAGE_NAME
-echo "https://github.com/openresty/echo-nginx-module/archive/v0.62.tar.gz" > docker/echo/source
-```
