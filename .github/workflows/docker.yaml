@@ -17,7 +17,7 @@ jobs:
         - "1.22.0-alpine3.15"
         - "1.22.0-alpine3.16"
         modules:
-        - "xslt geoip image-filter njs geoip2 brotli headers-more opentracing subs-filter set-misc nginx_accept_language_module"
+        - "nginx_accept_language_module xslt geoip image-filter njs geoip2 brotli headers-more opentracing subs-filter set-misc"
 
     steps:
     - name: Checkout
