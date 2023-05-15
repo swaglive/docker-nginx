@@ -7,9 +7,6 @@ updates:
   reviewers:
   - swaglive/backend-maintainers
   - swaglive/sre
-  labels:
-  - p2
-  - enhancement
 - package-ecosystem: docker
   directory: /
   schedule:
@@ -17,6 +14,3 @@ updates:
   reviewers:
   - swaglive/backend-maintainers
   - swaglive/sre
-  labels:
-  - p2
-  - enhancement
