@@ -15,7 +15,7 @@ jobs:
         version:
         - "1.23.4-alpine"
         modules:
-        - "xslt geoip image-filter njs geoip2 brotli headers-more opentracing subs-filter set-misc"
+        - "auth-spnego brotli encrypted-session fips-check geoip geoip2 headers-more image-filter lua modsecurity ndk njs opentracing passenger perl rtmp set-misc subs-filter xslt"
 
     steps:
     - name: Checkout
