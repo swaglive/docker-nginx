@@ -61,7 +61,7 @@ jobs:
         build-args: |
           version=${{ matrix.version }}
           ENABLED_MODULES=ndk ${{ matrix.modules }}
-        push: if: ${{ github.ref_name == 'master' }}
+        push: ${{ github.ref_name == 'master' }}
         labels: ${{ steps.meta.outputs.labels }}
         tags: ${{ steps.meta.outputs.tags }}
         cache-from: type=gha
