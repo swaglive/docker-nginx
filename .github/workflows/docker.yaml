@@ -6,7 +6,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
     permissions:
       contents: read
       packages: write
@@ -30,14 +29,14 @@ jobs:
 
     - name: Setup - Docker Hub
       uses: docker/login-action@v2
-      if: ${{ !steps.config.outputs.skip-push-to-registry }}
+      if: ${{ github.ref_name == 'master' }}
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Setup - Github Container Registry
       uses: docker/login-action@v2
-      if: ${{ !steps.config.outputs.skip-push-to-registry }}
+      if: ${{ github.ref_name == 'master' }}
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
@@ -65,7 +64,7 @@ jobs:
         build-args: |
           version=${{ matrix.version }}
           ENABLED_MODULES=ndk ${{ matrix.modules }}
-        push: ${{ !steps.config.outputs.skip-push-to-registry }}
+        push: if: ${{ github.ref_name == 'master' }}
         labels: ${{ steps.meta.outputs.labels }}
         tags: ${{ steps.meta.outputs.tags }}
         cache-from: type=gha
