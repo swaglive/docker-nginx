@@ -14,6 +14,7 @@ jobs:
       matrix:
         version:
         - "1.23.4-alpine"
+        - "1.25.1-alpine"
         modules:
         - "auth-spnego brotli encrypted-session fips-check geoip geoip2 headers-more image-filter lua modsecurity ndk njs opentracing passenger perl rtmp set-misc subs-filter xslt"
 
