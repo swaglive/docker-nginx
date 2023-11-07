@@ -1,7 +1,7 @@
 # REF: https://github.com/nginxinc/docker-nginx/blob/master/modules/Dockerfile.alpine
 ARG base=
 
-FROM nginx:${base} as builder
+FROM ${base} as builder
 
 ARG ENABLED_MODULES
 

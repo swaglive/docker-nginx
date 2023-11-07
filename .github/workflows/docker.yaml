@@ -81,7 +81,7 @@ jobs:
         context: modules
         file: modules/Dockerfile.alpine
         build-args: |
-          base=${{ matrix.version }}
+          base=nginx:${{ matrix.version }}
           ENABLED_MODULES=ndk ${{ matrix.modules }}
         push: true
         platforms: ${{ steps.qemu.outputs.platforms }}
