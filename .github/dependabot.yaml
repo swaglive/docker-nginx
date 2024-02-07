@@ -5,12 +5,10 @@ updates:
   schedule:
     interval: daily
   reviewers:
-  - swaglive/backend-maintainers
   - swaglive/sre
 - package-ecosystem: docker
   directory: /
   schedule:
     interval: daily
   reviewers:
-  - swaglive/backend-maintainers
   - swaglive/sre
