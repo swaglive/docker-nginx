@@ -21,7 +21,7 @@ jobs:
         version:
         - "1.25.4-alpine"
         modules:
-        - "auth-spnego brotli encrypted-session fips-check geoip geoip2 headers-more image-filter lua modsecurity ndk njs opentracing passenger perl rtmp set-misc subs-filter xslt ngx_http_proxy_connect_module nginx_accept_language_module"
+        - "auth-spnego brotli encrypted-session fips-check geoip geoip2 headers-more image-filter lua modsecurity ndk njs opentracing passenger perl rtmp set-misc subs-filter xslt ngx_http_proxy_connect_module nginx_accept_language_module ngx_http_zstd_filter_module"
 
     steps:
     - name: Checkout
